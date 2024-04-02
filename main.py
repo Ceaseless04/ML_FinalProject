@@ -44,3 +44,24 @@ filtered_rules = association_rules_df[(association_rules_df['confidence'] > 0.6)
 
 # Print the filtered rules
 print(filtered_rules)
+
+# Scatter Plot
+plt.figure(figsize=(10, 6))
+plt.scatter(filtered_rules['support'], filtered_rules['confidence'], alpha=0.5)
+plt.xlabel('Support')
+plt.ylabel('Confidence')
+plt.title('Association Rules Scatter Plot')
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+
+# Netowrk Plot
+plt.figure(figsize=(10, 6))
+G = nx.Graph()
+for i, row in filtered_rules.iterrows():
+    G.add_edge(row['antecedents'], row['consequents'], weight=row['lift'])
+pos = nx.spring_layout(G)
+nx.draw(G, pos, with_labels=True, node_size=2000, node_color='skyblue', font_size=10, font_weight='bold', edge_color='gray', width=filtered_rules['lift']*0.1)
+plt.title('Association Rules Netowrk Plot')
+plt.tight_layout()
+plt.show()
